@@ -5,7 +5,7 @@ interface TimerProps {
 }
 
 const Timer = (props: TimerProps) => {
-    return <div className="timer">{secondsToMinutes(props.mainTime)}</div>;
+    return <div className="text-8xl text-center">{secondsToMinutes(props.mainTime)}</div>;
 };
 
 export default Timer;

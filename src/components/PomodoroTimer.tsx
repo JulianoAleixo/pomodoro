@@ -75,8 +75,18 @@ const PomodoroTimer = (props: PomodoroTimerProps) => {
     );
 
     useEffect(() => {
-        if (isWorking) document.body.classList.add("working");
-        if (isResting) document.body.classList.remove("working");
+        if (isWorking) {
+            document.body.classList.add("bg-rose-800");
+            document.querySelectorAll(".pomodoro-buttons").forEach((e) => {
+                e.classList.add("bg-rose-800", "color-black");
+            });
+        }
+        if (isResting) {
+            document.body.classList.remove("bg-rose-800");
+            document.querySelectorAll(".pomodoro-buttons").forEach((e) => {
+                e.classList.remove("bg-rose-800", "color-black");
+            });
+        }
 
         if (mainTime > 0) return;
 
@@ -105,22 +115,31 @@ const PomodoroTimer = (props: PomodoroTimerProps) => {
     ]);
 
     return (
-        <div className="pomodoro">
-            <h2>Tempo de {isWorking ? "trabalho" : "descanso"}</h2>
+        <div className="bg-white mx-12 my-5 p-5 rounded-sm shadow-lg">
+            <h2 className="text-2xl text-center">
+                Tempo de {isWorking ? "trabalho" : "descanso"}
+            </h2>
             <Timer mainTime={mainTime} />
-            <div className="controls">
-                <Button text="Work" onClick={() => handleConfigureWork()} />
+            <div className="flex items-center justify-evenly">
                 <Button
+                    className="pomodoro-buttons"
+                    text="Work"
+                    onClick={() => handleConfigureWork()}
+                />
+                <Button
+                    className="pomodoro-buttons"
                     text="Rest"
                     onClick={() => handleConfigureRest(false)}
                 />
                 <Button
-                    className={!isWorking && !isResting ? "hidden" : ""}
+                    className={`pomodoro-buttons ${
+                        !isWorking && !isResting ? "hidden" : ""
+                    }`}
                     text={isTimeCounting ? "Pause" : "Play"}
                     onClick={() => setIsTimeCounting(!isTimeCounting)}
                 />
             </div>
-            <div className="details">
+            <div className="my-5 mx-0">
                 <p>Ciclos concluídos: {completedCycles}</p>
                 <p>Horas trabalhadas: {secondsToTime(fullWorkingTime)}</p>
                 <p>Pomodoros concluídos: {numberOfPomodoros}</p>

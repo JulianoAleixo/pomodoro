@@ -2,7 +2,7 @@ import PomodoroTimer from "./components/PomodoroTimer";
 
 function App() {
     return (
-        <div className="container">
+        <div className="max-w-[640px] my-0 mx-auto">
             <PomodoroTimer
                 pomodoroTime={1500}
                 shortRestTime={300}
