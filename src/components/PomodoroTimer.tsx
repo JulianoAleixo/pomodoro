@@ -27,6 +27,8 @@ const PomodoroTimer = (props: PomodoroTimerProps) => {
     const [completedCycles, setCompletedCycles] = useState(0);
     const [fullWorkingTime, setFullWorkingTime] = useState(0);
     const [numberOfPomodoros, setNumberOfPomodoros] = useState(0);
+    const [totalTime, setTotalTime] = useState(props.pomodoroTime);
+    const [percentage, setPercentage] = useState(50);
 
     useInterval(
         () => {
@@ -36,19 +38,19 @@ const PomodoroTimer = (props: PomodoroTimerProps) => {
         isTimeCounting ? 1000 : null
     );
 
+    useEffect(() => {
+        const progress = ((totalTime - mainTime) / totalTime) * 100;
+        setPercentage(Math.max(0, Math.min(progress, 100)));
+    }, [mainTime, totalTime]);
+
     const handleConfigureWork = useCallback(() => {
         setIsTimeCounting(true);
         setIsWorking(true);
         setIsResting(false);
+        setTotalTime(props.pomodoroTime);
         setMainTime(props.pomodoroTime);
         audioStartWorking.play();
-    }, [
-        setIsTimeCounting,
-        setIsWorking,
-        setIsResting,
-        setMainTime,
-        props.pomodoroTime,
-    ]);
+    }, [props.pomodoroTime]);
 
     const handleConfigureRest = useCallback(
         (long: boolean) => {
@@ -56,22 +58,14 @@ const PomodoroTimer = (props: PomodoroTimerProps) => {
             setIsWorking(false);
             setIsResting(true);
 
-            if (long) {
-                setMainTime(props.longRestTime);
-            } else {
-                setMainTime(props.shortRestTime);
-            }
+            const time = long ? props.longRestTime : props.shortRestTime;
+
+            setTotalTime(time);
+            setMainTime(time);
 
             audioStopWorking.play();
         },
-        [
-            setIsTimeCounting,
-            setIsWorking,
-            setIsResting,
-            setMainTime,
-            props.longRestTime,
-            props.shortRestTime,
-        ]
+        [props.longRestTime, props.shortRestTime]
     );
 
     useEffect(() => {
@@ -109,7 +103,6 @@ const PomodoroTimer = (props: PomodoroTimerProps) => {
         mainTime,
         completedCycles,
         handleConfigureRest,
-        setCyclesQtdManager,
         handleConfigureWork,
         props.cycles,
     ]);
@@ -119,7 +112,9 @@ const PomodoroTimer = (props: PomodoroTimerProps) => {
             <h2 className="text-2xl text-center">
                 Tempo de {isWorking ? "trabalho" : "descanso"}
             </h2>
+
             <Timer mainTime={mainTime} />
+            
             <div className="flex items-center justify-evenly">
                 <Button
                     className="pomodoro-buttons"
@@ -139,6 +134,19 @@ const PomodoroTimer = (props: PomodoroTimerProps) => {
                     onClick={() => setIsTimeCounting(!isTimeCounting)}
                 />
             </div>
+
+            <div
+                className="w-full bg-slate-900 rounded-full h-4 overflow-hidden"
+                title={`${Math.round(percentage)}%`}
+            >
+                <div
+                    className="bg-cyan-600 h-4 transition-all duration-500"
+                    style={{
+                        width: `${percentage}%`,
+                    }}
+                />
+            </div>
+
             <div className="my-5 mx-0">
                 <p>Ciclos concluídos: {completedCycles}</p>
                 <p>Horas trabalhadas: {secondsToTime(fullWorkingTime)}</p>
