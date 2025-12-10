@@ -11,15 +11,14 @@ function App() {
             <Navbar setActiveTab={setActiveTab} />
             {activeTab === "timer" && (
                 <div className="h-screen flex justify-center items-center">
-                    <PomodoroTimer
-                        pomodoroTime={1500}
-                        shortRestTime={300}
-                        longRestTime={900}
-                        cycles={4}
-                    />
+                    <PomodoroTimer />
                 </div>
             )}
-            {activeTab === "info" && <div className="h-screen flex justify-center items-center">...</div>}
+            {activeTab === "info" && (
+                <div className="h-screen flex justify-center items-center">
+                    ...
+                </div>
+            )}
             <Footer />
         </div>
     );
