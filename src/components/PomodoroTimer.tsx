@@ -108,13 +108,13 @@ const PomodoroTimer = (props: PomodoroTimerProps) => {
     ]);
 
     return (
-        <div className="bg-white mx-12 my-5 p-5 rounded-sm shadow-lg">
+        <div className="bg-slate-200 mx-12 my-5 p-5 rounded-sm shadow-lg min-w-md">
             <h2 className="text-2xl text-center">
                 Tempo de {isWorking ? "trabalho" : "descanso"}
             </h2>
 
             <Timer mainTime={mainTime} />
-            
+
             <div className="flex items-center justify-evenly">
                 <Button
                     className="pomodoro-buttons"
