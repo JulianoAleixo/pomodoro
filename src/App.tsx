@@ -2,6 +2,7 @@ import { useState } from "react";
 import Navbar from "./components/Navbar";
 import PomodoroTimer from "./components/PomodoroTimer";
 import Footer from "./components/Footer";
+import PomodoroInfo from "./components/PomodoroInfo";
 
 function App() {
     const [activeTab, setActiveTab] = useState<"timer" | "info">("timer");
@@ -15,8 +16,8 @@ function App() {
                 </div>
             )}
             {activeTab === "info" && (
-                <div className="h-screen flex justify-center items-center">
-                    ...
+                <div className="min-h-screen mt-[60px] flex justify-center items-center">
+                    <PomodoroInfo />
                 </div>
             )}
             <Footer />
